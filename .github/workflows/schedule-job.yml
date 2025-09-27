@@ -1,0 +1,16 @@
+name: schedule jobs
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v5
+      - name: Setup node
+        uses: actions/setup-node@v5
+      - name: install node js project
+        run: npm install
