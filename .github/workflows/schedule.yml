@@ -1,16 +1,40 @@
-name: Schedule-Test
+name: Daily Build
 
 on:
-  schedule:
-    - cron: "*/5 * * * *"
-  workflow_dispatch:
+    # schedule:
+    #     - cron: "*/5 * * * *"
+    workflow_dispatch: 
+    push:
+        branches:
+            - main
 
 jobs:
-   show-time:
-     runs-on: ubuntu-latest
-     steps:
-       - name: Show Current UTC Time
-         run: date -u
+    build:
+        runs-on: ubuntu-latest
+        steps:
 
-       - name: Show Current Local time (IST)
-         run: date -d '+5 hours 30 minutes'
+            - name: Show Current Time and Date
+              run: date -u
+            - name: Checkout Code
+              uses: actions/checkout@v5
+
+            - name: Set up Node JS
+              uses: actions/setup-node@v5
+              with:
+                node-version: '20.19.0'
+            
+            - name: Install Dependencies
+              run: rm -rf node_modules package-lock.json && npm install
+
+            - name: Run tests
+              run: npm test
+
+            - name: Build React App
+              run: npm run build
+
+            # upload Build Artifacts
+            - name: Upload Build Artifacts
+              uses: actions/upload-artifact@v4
+              with:
+                name: react-build
+                path: dist
