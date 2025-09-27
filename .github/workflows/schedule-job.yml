@@ -1,7 +1,8 @@
 name: schedule jobs
 on:
-  cron: "*/5 * * *"
-  workflow_dispatch:
+  schedule:
+    cron: "*/5 * * *"
+    workflow_dispatch:
   # push:
   #   branches:
   #     - main
